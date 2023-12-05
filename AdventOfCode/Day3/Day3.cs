@@ -79,7 +79,7 @@ public class Day3
             var line = inputFile[i];
             var curIndexes = FindUnknownCharIndexes(line);
 
-            var previousLine = i - 1 > 0 ? inputFile[i - 1] : String.Empty;
+            var previousLine = i - 1 >= 0 ? inputFile[i - 1] : String.Empty;
             var nextLine = i + 1 < inputFile.Length ? inputFile[i + 1] : String.Empty;
             var prevIndexes = FindUnknownCharIndexes(previousLine);
             var nextIndexes = FindUnknownCharIndexes(nextLine);
@@ -140,9 +140,79 @@ public class Day3
     {
         Console.WriteLine("PART TWO");
         var inputFile = File.ReadAllLines("C:\\Users\\playv\\RiderProjects\\AdventOfCode\\AdventOfCode\\Day3\\input.txt");
-        
-        // TODO: FINISH IT
-        
+        for (var i = 0; i < inputFile.Length; i++)
+        {
+            var line = inputFile[i];
+            var curGears = FindGearIndexes(line);
+            var curNumbers = FindNumbers(line);
+            
+            
+            var previousLine = i - 1 >= 0 ? inputFile[i - 1] : String.Empty;
+            var nextLine = i + 1 < inputFile.Length ? inputFile[i + 1] : String.Empty;
+            var prevNumbers = FindNumbers(previousLine);
+            var nextNumbers = FindNumbers(nextLine);
+
+            foreach (var gearIdx in curGears)
+            {
+                var numList = new List<int>();
+                
+                // Side check.
+                if (curNumbers.Keys.Contains(gearIdx - 1))
+                {
+                    numList.Add(curNumbers[gearIdx - 1]);
+                }
+
+                if (curNumbers.Keys.Contains(gearIdx + 1))
+                {
+                    numList.Add(curNumbers[gearIdx + 1]);
+                }
+                
+                // top + bottom
+                var aboveGear = false;
+                var underGear = false;
+                if (prevNumbers.Keys.Contains(gearIdx))
+                {
+                    aboveGear = true;
+                    numList.Add(prevNumbers[gearIdx]);
+                }
+
+                if (nextNumbers.Keys.Contains(gearIdx))
+                {
+                    underGear = true;
+                    numList.Add(nextNumbers[gearIdx]);
+                }
+
+                // diagonal top
+                if (!aboveGear && prevNumbers.Keys.Contains(gearIdx - 1))
+                {
+                    numList.Add(prevNumbers[gearIdx - 1]);
+                }
+
+                if (!aboveGear && prevNumbers.Keys.Contains(gearIdx + 1))
+                {
+                    numList.Add(prevNumbers[gearIdx + 1]);
+                }
+
+                // diagonal bottom
+                if (!underGear && nextNumbers.Keys.Contains(gearIdx - 1))
+                {
+                    numList.Add(nextNumbers[gearIdx - 1]);
+                }
+
+                if (!underGear && nextNumbers.Keys.Contains(gearIdx + 1))
+                {
+                    numList.Add(nextNumbers[gearIdx + 1]);
+                }
+
+                if (numList.Count == 2)
+                {
+                    ValuesPartTwo.Add(numList[0] * numList[1]);
+                }
+                
+            }
+            
+        }
+
         Console.WriteLine("Answer: {0}", ValuesPartTwo.Sum());
         Console.WriteLine("END OF PART TWO");
     }
