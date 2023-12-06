@@ -69,22 +69,9 @@ public class Day5
     {
         foreach (var map in mapping)
         {
-            long destinationRangeStart = 0;
-            long sourceRangeStart = 0;
-            long rangeLength = 0;
-            
-            try
-            {
-                destinationRangeStart = map[0];
-                sourceRangeStart = map[1];
-                rangeLength = map[2];
-            }
-            catch
-            {
-                map.ForEach(x => Console.Write("{0} ", x));
-                Console.WriteLine();
-                throw new Exception("a");
-            }
+            var destinationRangeStart = map[0];
+            var sourceRangeStart = map[1];
+            var rangeLength = map[2];
 
             if (sourceRangeStart <= value && value <= sourceRangeStart + (rangeLength - 1))
             {
